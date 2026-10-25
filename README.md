@@ -1,3 +1,6 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Blackwood: Last Shift</title><meta name="color-scheme" content="dark">
+<style>
+:root{--bg:#040506;--fg:#d5ddd8;--ac:#e23b3b;--ok:#6fd49a;--pn:#0b100fe8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#040506}}:root[data-theme="dark"]{--bg:#040506}
 html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
 canvas{position:fixed;inset:0;width:100%;height:100%}
@@ -26,7 +29,7 @@ select{font:inherit;color:var(--fg);background:#101a16;border:1px solid #3e5a4e;
 <h2>SURVIVORS</h2><p><small>Repair every generator (hold E), find the gate key, unlock the exit and escape.</small></p><h2>THE WARDEN</h2><p><small>[1] Dash · [2] Sense · [3] Seal Door · [4] Blackout · [5] Shriek. One random player or bot is the Warden each match.</small></p><p><small>WASD move · Shift sprint · E interact · click to capture the mouse</small></p><button id="bn" class="sm">CHANGE NAME / STATE</button></div>
 <div class="scr" id="s-join"><h2>JOIN A LOBBY</h2><div class="row"><input id="code" maxlength="4" placeholder="CODE" style="width:90px"><button id="bj" style="margin:0">JOIN</button></div><p id="je" style="color:#e66"></p><h2 id="ph"></h2><div id="pl"></div><button class="back">BACK</button></div>
 <div class="scr" id="s-fr"><h2>FRIENDS</h2><div class="row"><input id="fi" maxlength="14" placeholder="friend’s username" style="width:180px;text-transform:none"><button id="fa" style="margin:0">ADD FRIEND</button></div><div id="fl"></div><p><small>Friends show as online when they have the game open. If they are in a lobby, you can join them.</small></p><button class="back">BACK</button></div>
-<div class="scr" id="s-lob"><h2>LOBBY CODE: <span id="lc" style="color:#ffd27a;letter-spacing:.3em;font-size:18px"></span></h2><div id="lp"></div><h2>SETTINGS <small id="lh"></small></h2><div class="cg"><label>Max players<select id="c-max"></select></label><label>Generator repair time<select id="c-rep"><option value="40">Quick (40s)</option><option value="60">Normal (60s)</option><option value="90">Long (90s)</option></select></label><label>Generators<select id="c-gen"><option>3</option><option>4</option><option>5</option></select></label><label>Bot skill<select id="c-dif"><option value="0">Easy</option><option value="1">Normal</option><option value="2">Hard</option></select></label><label>Visibility<select id="c-pub"><option value="1">Public (my state)</option><option value="0">Private (code / friends)</option></select></label></div><p><small>Empty slots are filled with bots when the host starts.</small></p><button class="big" id="bcr">CREATE LOBBY</button><button class="big" id="bg">START MATCH</button><button onclick="location.reload()">LEAVE</button></div>
+<div class="scr" id="s-lob"><h2>LOBBY CODE: <span id="lc" style="color:#ffd27a;letter-spacing:.3em;font-size:18px"></span></h2><div id="lp"></div><h2>SETTINGS <small id="lh"></small></h2><div class="cg"><label>Max players<select id="c-max"></select></label><label>Generator repair time<select id="c-rep"><option value="40">Quick (40s)</option><option value="60">Normal (60s)</option><option value="90">Long (90s)</option></select></label><label>Generators<select id="c-gen"><option>3</option><option>4</option><option>5</option></select></label><label>Bot skill<select id="c-dif"><option value="0">Easy</option><option value="1">Normal</option><option value="2">Hard</option></select></label><label>Visibility<select id="c-pub"><option value="1">Public (my state)</option><option value="0">Private (code / friends)</option></select></label></div><p><small>Empty slots are filled with bots when the host starts. If online rooms aren't available in this view, this creates a local offline bot match.</small></p><button class="big" id="bcr">CREATE LOBBY</button><button class="big" id="bg">START MATCH</button><button onclick="location.reload()">LEAVE</button></div>
 </div></div>
 <div class="ov" id="end" style="display:none"><div class="pn"><h1 id="et"></h1><p id="es"></p><button onclick="location.reload()">MAIN MENU</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -143,7 +146,7 @@ addEventListener('keydown',e=>{if(e.target.tagName=='INPUT')return;keys[e.code]=
 addEventListener('keyup',e=>keys[e.code]=0);
 addEventListener('mousedown',e=>{md=1;if(mode=='play'&&e.target.tagName=='CANVAS'&&rd.domElement.requestPointerLock)rd.domElement.requestPointerLock()});addEventListener('mouseup',()=>md=0);
 addEventListener('mousemove',e=>{if(mode!='play'||(!document.pointerLockElement&&!md))return;yaw-=e.movementX*.0024;pit=Math.max(-1.3,Math.min(1.3,pit-e.movementY*.0024))});
-let pre=false,cfg={max:4,rep:60,gens:3,diff:1,pub:1},isHost=false,lobCode='',ROOM=null,R0=null,L0=[];
+let pre=false,localLobby=false,cfg={max:4,rep:60,gens:3,diff:1,pub:1},isHost=false,lobCode='',ROOM=null,R0=null,L0=[];
 const ls={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}},esc=t=>String(t).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const show=id=>document.querySelectorAll('.scr').forEach(e=>e.style.display=e.id==id?'block':'none');
 const ST=['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
@@ -168,12 +171,12 @@ $('fa').onclick=()=>{const n=$('fi').value.trim();if(/^[A-Za-z0-9_ ]{2,14}$/.tes
 window.joinCode=c=>enter(String(c).toUpperCase().replace(/[^A-Z0-9]/g,''),false);
 $('bj').onclick=()=>{const c=$('code').value.trim();if(c.length>=3)joinCode(c);else $('je').textContent='Enter the 4-letter lobby code.'};
 const code4=()=>Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd()*24|0]).join('');
-$('bo').onclick=()=>{if(!net){alert('Online play isn’t available in this view. Open the shared link while signed in.');return}
+$('bo').onclick=()=>{if(!net){cfg={max:5,rep:60,gens:3,diff:1,pub:0};isHost=true;myId='me';const ids=['me','b1','b2','b3','b4'];begin((rnd()*1e9)|0,ids[rnd()*ids.length|0],4);toast('Online rooms unavailable here — starting an offline bot match.');return}
 const open=L0.filter(p=>!p.isMe&&p.presence&&p.presence.l&&p.presence.pub&&p.presence.n<p.presence.m),pk=open.find(p=>p.presence.s==me.s)||open[0];
 if(pk)return joinCode(pk.presence.l);cfg={max:5,rep:60,gens:3,diff:1,pub:1};qmEnd=Date.now()+25000;enter(code4(),true)};
 setInterval(()=>{if(!qmEnd||mode=='play'||!isHost||!R)return;const t=Math.ceil((qmEnd-Date.now())/1000);if(t<=0){qmEnd=0;$('bg').onclick();return}$('lh').textContent=`(quick match starts in ${t}s — press START to go now)`},500);
-$('bc').onclick=()=>{if(!ROOM){alert('Online play isn’t available in this view. Open the shared link while signed in.');return}pre=true;isHost=true;R=null;L=[];$('lc').textContent='— — — —';show('s-lob');lobby()};
-$('bcr').onclick=()=>{if(pre)enter(Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd()*24|0]).join(''),true)};
+$('bc').onclick=()=>{pre=true;isHost=true;R=null;L=[];localLobby=!ROOM;$('lc').textContent=localLobby?'OFFLINE':'— — — —';show('s-lob');lobby();if(localLobby){$('lh').textContent='(offline bot lobby — online rooms require the shared signed-in game view)';$('bcr').textContent='START OFFLINE MATCH';$('bg').style.display='none'}};
+$('bcr').onclick=()=>{if(!pre)return;if(localLobby){pre=false;myId='me';const ids=['me',...Array.from({length:Math.max(1,cfg.max-1)},(_,i)=>'b'+(i+1))];begin((rnd()*1e9)|0,ids[rnd()*ids.length|0],Math.max(1,cfg.max-1));toast('Offline lobby started with bots.');return}enter(Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd()*24|0]).join(''),true)};
 async function enter(code,host){pre=false;if(!ROOM){$('je').textContent='Online play isn’t available in this view.';return}try{R=await ROOM.join('bw'+code.toLowerCase());isHost=host;lobCode=code;myId='me2';
 R.on('g',m=>handle(m.data,m));R.onPeers(ch=>{L=ch.peers.slice();const m=L.find(p=>p.isMe);if(m)myId=m.peer;lobby();net0();if(isHost&&ch.joined.length)R.emit('g',{t:'cfg',c:cfg})});
 R.presence({u:me.u,h:host?1:0,x:0,z:0,y:0,r:'s',s:'a',v:1});L=R.peers().slice();$('lc').textContent=code;show('s-lob');lobby();net0()}catch(e){R=null;$('je').textContent='Could not join: '+(e.message||e.code||'error')}}
@@ -255,6 +258,5 @@ $('end').style.display='flex';$('et').textContent=esc?'SURVIVORS ESCAPED':'THE W
 $('es').textContent=role=='m'?(esc?'Some of them slipped through the gate.':'No one left alive.'):(st=='e'?'You made it out of Blackwood.':'You did not make it out.')}
 requestAnimationFrame(frame);
 </script></body></html>
-
 
 
