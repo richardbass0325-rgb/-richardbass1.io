@@ -25,7 +25,7 @@ select{font:inherit;color:var(--fg);background:#101a16;border:1px solid #3e5a4e;
 <div class="ov" id="menu"><div class="pn">
 <h1>BLACKWOOD</h1><p><b>LAST SHIFT</b> <small>— the asylum never sleeps</small></p>
 <div class="scr" id="s-user"><h2>CHOOSE YOUR USERNAME</h2><p><small>Other players and friends will see this name.</small></p><input id="un" maxlength="14" placeholder="username" style="width:100%;text-transform:none"><h2>YOUR STATE</h2><select id="us"></select><p id="ue" style="color:#e66"></p><button class="big" id="ub">CONTINUE</button></div>
-<div class="scr" id="s-main"><p id="hi"></p><button class="big" id="bs">QUICK PLAY <small>· you + bots</small></button><button class="big" id="bc">CREATE LOBBY</button><button class="big" id="bj0">JOIN LOBBY</button><button class="big" id="bf">FRIENDS</button><p id="me"></p>
+<div class="scr" id="s-main"><p id="hi"></p><p id="ol"></p><button class="big" id="bo" style="border-color:#6fd49a">ONLINE PLAY <small>· quick match</small></button><button class="big" id="bs">PLAY OFFLINE <small>· you + bots</small></button><button class="big" id="bc">CREATE LOBBY</button><button class="big" id="bj0">JOIN LOBBY</button><button class="big" id="bf">FRIENDS</button><p id="me"></p>
 <h2>SURVIVORS</h2><p><small>Repair every generator (hold E), find the gate key, unlock the exit and escape.</small></p><h2>THE WARDEN</h2><p><small>[1] Dash · [2] Sense · [3] Seal Door · [4] Blackout · [5] Shriek. One random player or bot is the Warden each match.</small></p><p><small>WASD move · Shift sprint · E interact · click to capture the mouse</small></p><button id="bn" class="sm">CHANGE NAME / STATE</button></div>
 <div class="scr" id="s-join"><h2>JOIN A LOBBY</h2><div class="row"><input id="code" maxlength="4" placeholder="CODE" style="width:90px"><button id="bj" style="margin:0">JOIN</button></div><p id="je" style="color:#e66"></p><h2 id="ph"></h2><div id="pl"></div><button class="back">BACK</button></div>
 <div class="scr" id="s-fr"><h2>FRIENDS</h2><div class="row"><input id="fi" maxlength="14" placeholder="friend’s username" style="width:180px;text-transform:none"><button id="fa" style="margin:0">ADD FRIEND</button></div><div id="fl"></div><p><small>Friends show as online when they have the game open. If they are in a lobby, you can join them.</small></p><button class="back">BACK</button></div>
@@ -152,13 +152,15 @@ const show=id=>document.querySelectorAll('.scr').forEach(e=>e.style.display=e.id
 const ST=['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
 $('us').innerHTML=ST.map(x=>`<option>${x}</option>`).join('');$('c-max').innerHTML=[2,3,4,5,6,7,8].map(n=>`<option>${n}</option>`).join('');
 let me={u:'',s:'Texas'};const frs=()=>{try{return JSON.parse(ls.g('bw_f')||'[]')}catch(e){return[]}};
-function home(){$('hi').innerHTML=`Signed in as <b style="color:#ffd27a">${esc(me.u)}</b> <small>· ${esc(me.s)}</small>`;show('s-main')}
+let net=0,qmEnd=0;
+function olUp(){const e=$('ol');if(e)e.innerHTML=net?`<span style="color:#6fd49a">● ONLINE</span> <small>${L0.length} player${L0.length==1?'':'s'} connected</small>`:'<span style="color:#e66">○ OFFLINE</span> <small>online play needs the shared link while signed in</small>'}
+function home(){olUp();$('hi').innerHTML=`Signed in as <b style="color:#ffd27a">${esc(me.u)}</b> <small>· ${esc(me.s)}</small>`;show('s-main')}
 $('ub').onclick=()=>{const u=$('un').value.trim();if(!/^[A-Za-z0-9_ ]{2,14}$/.test(u)){$('ue').textContent='Use 2–14 letters, numbers, spaces or _.';return}me.u=u;me.s=$('us').value;ls.s('bw_u',u);ls.s('bw_s',me.s);home();connect()};
 $('bn').onclick=()=>{$('un').value=me.u;$('us').value=me.s;show('s-user')};
 document.querySelectorAll('.back').forEach(b=>b.onclick=home);
 $('bf').onclick=()=>{renderFr();show('s-fr')};$('bj0').onclick=()=>{$('je').textContent=ROOM?'':'Online play isn’t available in this view. Open the shared link while signed in.';renderJoin();show('s-join')};
 {const u=ls.g('bw_u');if(u){me.u=u;me.s=ls.g('bw_s')||'Texas';home();connect()}else show('s-user')}
-async function connect(){try{ROOM=window.claude&&await claude.use('room');if(!ROOM)return;R0=await ROOM.join('bw-net');R0.onPeers(c=>{L0=c.peers.slice();renderJoin();renderFr()});net0()}catch(e){ROOM=null}}
+async function connect(){try{ROOM=window.claude&&await claude.use('room');if(!ROOM)return olUp();R0=await ROOM.join('bw-net');R0.onPeers(c=>{L0=c.peers.slice();renderJoin();renderFr();olUp()});net=1;net0();olUp()}catch(e){ROOM=null;net=0;olUp()}}
 function net0(){R0&&R0.presence({u:me.u,s:me.s,l:R?lobCode:'',pub:R&&isHost&&cfg.pub?1:0,n:L.length,m:cfg.max})}
 function renderJoin(){$('ph').textContent='PUBLIC LOBBIES IN '+me.s.toUpperCase();const a=L0.filter(p=>!p.isMe&&p.presence&&p.presence.l&&p.presence.pub&&p.presence.s==me.s);
 $('pl').innerHTML=a.map(p=>`<div class="row"><span>${esc(p.presence.u)}’s lobby <small>${+p.presence.n}/${+p.presence.m}</small></span><button class="sm" ${p.presence.n>=p.presence.m?'disabled':''} onclick="joinCode('${esc(p.presence.l)}')">JOIN</button></div>`).join('')||'<small>No public lobbies in your state right now. Create one!</small>'}
@@ -168,6 +170,11 @@ window.rmF=n=>{ls.s('bw_f',JSON.stringify(frs().filter(x=>x!=n)));renderFr()};
 $('fa').onclick=()=>{const n=$('fi').value.trim();if(/^[A-Za-z0-9_ ]{2,14}$/.test(n)&&n.toLowerCase()!=me.u.toLowerCase()&&!frs().some(x=>x.toLowerCase()==n.toLowerCase())){ls.s('bw_f',JSON.stringify(frs().concat(n)));$('fi').value='';renderFr()}};
 window.joinCode=c=>enter(String(c).toUpperCase().replace(/[^A-Z0-9]/g,''),false);
 $('bj').onclick=()=>{const c=$('code').value.trim();if(c.length>=3)joinCode(c);else $('je').textContent='Enter the 4-letter lobby code.'};
+const code4=()=>Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd()*24|0]).join('');
+$('bo').onclick=()=>{if(!net){alert('Online play isn’t available in this view. Open the shared link while signed in.');return}
+const open=L0.filter(p=>!p.isMe&&p.presence&&p.presence.l&&p.presence.pub&&p.presence.n<p.presence.m),pk=open.find(p=>p.presence.s==me.s)||open[0];
+if(pk)return joinCode(pk.presence.l);cfg={max:5,rep:60,gens:3,diff:1,pub:1};qmEnd=Date.now()+25000;enter(code4(),true)};
+setInterval(()=>{if(!qmEnd||mode=='play'||!isHost||!R)return;const t=Math.ceil((qmEnd-Date.now())/1000);if(t<=0){qmEnd=0;$('bg').onclick();return}$('lh').textContent=`(quick match starts in ${t}s — press START to go now)`},500);
 $('bc').onclick=()=>{if(!ROOM){alert('Online play isn’t available in this view. Open the shared link while signed in.');return}pre=true;isHost=true;R=null;L=[];$('lc').textContent='— — — —';show('s-lob');lobby()};
 $('bcr').onclick=()=>{if(pre)enter(Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd()*24|0]).join(''),true)};
 async function enter(code,host){pre=false;if(!ROOM){$('je').textContent='Online play isn’t available in this view.';return}try{R=await ROOM.join('bw'+code.toLowerCase());isHost=host;lobCode=code;myId='me2';
@@ -251,4 +258,5 @@ $('end').style.display='flex';$('et').textContent=esc?'SURVIVORS ESCAPED':'THE W
 $('es').textContent=role=='m'?(esc?'Some of them slipped through the gate.':'No one left alive.'):(st=='e'?'You made it out of Blackwood.':'You did not make it out.')}
 requestAnimationFrame(frame);
 </script></body></html>
+
 
