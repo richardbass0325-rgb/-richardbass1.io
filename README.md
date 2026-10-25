@@ -20,7 +20,50 @@ button:hover{border-color:var(--ok);box-shadow:0 0 14px #2a6;background:#1f3a30}
 #sb{left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:160px;margin-left:-80px;height:5px;background:#0008}#sb i{display:block;height:100%;background:#8cd}
 #vg{position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(transparent 45%,#000d),repeating-linear-gradient(#0000 0 2px,#0003 2px 3px)}
 select{font:inherit;color:var(--fg);background:#101a16;border:1px solid #3e5a4e;padding:7px;border-radius:3px;margin:3px 0;width:100%}select:disabled{opacity:.6}.scr{display:none}.cg{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px}.cg label{font-size:11px;color:#93a39b}.row{display:flex;align-items:center;gap:6px;margin:3px 0}.row span{flex:1}button.sm{padding:5px 10px;margin:0;font-size:12px}
+
+/* Touch controls for phones/tablets */
+#mobileControls{display:none;position:fixed;inset:0;z-index:4;pointer-events:none;touch-action:none}
+#stickBase{position:absolute;left:22px;bottom:28px;width:128px;height:128px;border:2px solid #91a99b88;border-radius:50%;background:#07110c88;pointer-events:auto;touch-action:none}
+#stickKnob{position:absolute;left:39px;top:39px;width:46px;height:46px;border-radius:50%;background:#b8cfc088;border:2px solid #d5ddd899}
+#touchActions{position:absolute;right:14px;bottom:22px;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px;width:190px;pointer-events:auto}
+#mobileControls button{padding:12px 10px;margin:0;min-width:58px;min-height:48px;background:#09120fdd;border-color:#8aa394aa;touch-action:manipulation;font-size:11px}
+#lookPad{position:absolute;left:36%;right:0;top:0;bottom:0;pointer-events:auto;touch-action:none}
+#spectateReturn{display:none;position:fixed;top:58px;right:10px;z-index:7;background:#160b0bdd;border-color:#c33;padding:10px 12px}#deathOverlay{display:none;position:fixed;inset:0;z-index:8;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle,#540909eF 0,#090000f5 55%,#000 100%);animation:deathPulse .18s infinite alternate}
+#deathCard{padding:24px;max-width:420px;width:90%;background:#080707ee;border:2px solid #a31313;box-shadow:0 0 40px #e00000;}
+#deathTitle{font-size:clamp(28px,8vw,54px);letter-spacing:.14em;color:#ff2929;text-shadow:0 0 16px #f00;animation:deathZoom .65s ease-out}
+#deathOverlay button{width:100%;margin:7px 0}
+@keyframes deathPulse{from{filter:brightness(.65)}to{filter:brightness(1.25)}}@keyframes deathZoom{from{transform:scale(2.4);opacity:0}to{transform:scale(1);opacity:1}}
+
+#wardenRelease{display:none;position:fixed;inset:0;z-index:20;background:#000;color:#f2eeee;align-items:center;justify-content:center;flex-direction:column;text-align:center;overflow:hidden;isolation:isolate}
+.releaseNoise{position:absolute;inset:-30%;opacity:.17;background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 4px);animation:releaseNoise .09s steps(2) infinite;pointer-events:none}
+.releaseLabel{color:#a52222;font-size:clamp(12px,3vw,20px);letter-spacing:.42em;text-shadow:0 0 18px #a00;animation:releaseFlicker .7s infinite}
+#releaseCount{font-size:clamp(100px,28vw,220px);line-height:1;font-weight:900;letter-spacing:.04em;text-shadow:0 0 8px #fff,0 0 34px #a00;animation:countHit .8s infinite}
+.releaseWarning{font-size:clamp(14px,4vw,25px);color:#c21c1c;letter-spacing:.3em;animation:releaseFlicker .28s infinite}
+.releaseSub{margin-top:22px;color:#555;font-size:11px;letter-spacing:.25em}
+@keyframes releaseNoise{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-2%)}75%{transform:translate(1%,3%)}100%{transform:translate(-2%,-1%)}}
+@keyframes releaseFlicker{0%,18%,20%,62%,64%,100%{opacity:1}19%,63%{opacity:.12}}
+@keyframes countHit{0%{transform:scale(1);filter:brightness(1)}10%{transform:scale(1.13);filter:brightness(2)}18%{transform:scale(.98)}100%{transform:scale(1)}}
+#jumpOverlay{display:none;position:fixed;inset:0;z-index:30;overflow:hidden;background:#000;align-items:center;justify-content:center;flex-direction:column;animation:jumpFlash .12s steps(2) infinite}
+.jumpStatic{position:absolute;inset:-20%;background:repeating-linear-gradient(0deg,#fff2 0 1px,#0000 1px 3px),repeating-linear-gradient(90deg,#a00 0 1px,#0000 1px 7px);opacity:.28;animation:releaseNoise .05s steps(2) infinite}
+.jumpFace{position:relative;width:min(80vw,500px);height:min(78vh,560px);background:radial-gradient(ellipse at 50% 35%,#4a4945 0,#151414 42%,#000 72%);clip-path:polygon(18% 0,82% 0,100% 24%,92% 70%,72% 100%,27% 100%,7% 68%,0 22%);filter:contrast(1.5) drop-shadow(0 0 25px #a00000);animation:faceLunge .48s cubic-bezier(.1,.8,.2,1) forwards}
+.jumpBrow{position:absolute;top:22%;left:10%;width:80%;height:19%;background:#050505;clip-path:polygon(0 0,45% 38%,50% 70%,55% 38%,100% 0,87% 65%,62% 100%,50% 72%,38% 100%,13% 65%)}
+.jumpEyes{position:absolute;top:30%;left:16%;width:68%;display:flex;justify-content:space-between}
+.jumpEyes i{display:block;width:31%;height:clamp(20px,7vw,52px);background:#f8eee5;box-shadow:0 0 15px 8px #f22,0 0 45px 20px #a00;clip-path:polygon(0 35%,100% 0,78% 100%,25% 85%);animation:eyeStrobe .16s steps(2) infinite}
+.jumpEyes i+ i{transform:scaleX(-1)}
+.jumpNose{position:absolute;left:42%;top:42%;width:18%;height:25%;background:#050505;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.jumpMouth{position:absolute;left:19%;top:61%;width:62%;height:30%;background:#050000;border:3px solid #5a1010;box-shadow:0 0 22px #b00;clip-path:polygon(0 0,100% 0,88% 100%,12% 100%);display:flex;justify-content:space-evenly;align-items:flex-start;padding-top:2%;box-sizing:border-box}
+.jumpMouth i{width:11%;height:27%;background:#ddd9ce;clip-path:polygon(0 0,100% 0,50% 100%)}
+.jumpText{position:absolute;bottom:5%;font-size:clamp(22px,6vw,42px);font-weight:900;letter-spacing:.3em;color:#f11;text-shadow:0 0 12px #f00;animation:releaseFlicker .15s infinite}
+@keyframes faceLunge{0%{transform:scale(.12) rotate(8deg);filter:brightness(0)}55%{transform:scale(1.22) rotate(-4deg);filter:brightness(2)}100%{transform:scale(1.06) rotate(1deg);filter:brightness(1.2)}}
+@keyframes jumpFlash{0%{background:#000}25%{background:#7c0000}50%{background:#000}75%{background:#230000}100%{background:#000}}
+@keyframes eyeStrobe{0%,100%{opacity:1}50%{opacity:.15}}
+
+@media (pointer:coarse),(max-width:800px){#mobileControls{display:block}#abs{bottom:170px;flex-wrap:wrap;padding:0 6px} .ab{min-width:55px;font-size:9px;padding:6px 5px}#obj{min-width:130px;max-width:48vw;font-size:10px}#role{font-size:10px;right:5px;top:5px} .pn{padding:16px;width:calc(100% - 24px);max-height:92dvh;overflow:auto}h1{font-size:27px}button.big{padding:12px;font-size:14px}}
 </style></head><body>
+<div id="mobileControls" style="display:none"><div id="lookPad" aria-label="Drag to look"></div><div id="stickBase"><div id="stickKnob"></div></div><div id="touchActions"><button id="touchRun">RUN</button><button id="touchAct">INTERACT</button><button id="touchJump" style="display:none">USE</button></div></div>
+<div id="wardenRelease" aria-live="assertive"><div class="releaseNoise"></div><div class="releaseLabel">CONTAINMENT FAILURE</div><div id="releaseCount">5</div><div class="releaseWarning">KEEP IT CONTAINED</div><div class="releaseSub">DO NOT LOOK AT THE DOOR</div></div>
+<div id="jumpOverlay" aria-hidden="true"><div class="jumpStatic"></div><div class="jumpFace"><div class="jumpBrow"></div><div class="jumpEyes"><i></i><i></i></div><div class="jumpNose"></div><div class="jumpMouth"><i></i><i></i><i></i><i></i><i></i></div></div><div class="jumpText">IT FOUND YOU</div></div>
+<button id="spectateReturn">RETURN TO LOBBY</button><div id="deathOverlay"><div id="deathCard"><div id="deathTitle">CAUGHT</div><p id="deathText">The Warden found you.</p><div id="spectateChoices" style="display:none"><button id="spectateBtn">SPECTATE PLAYERS</button><button id="deathLobbyBtn">RETURN TO LOBBY</button></div><div id="soloDeathChoices" style="display:none"><button id="soloLobbyBtn">RETURN TO LOBBY</button></div></div></div>
 <div id="vg"></div><div class="hud" id="obj"></div><div class="hud" id="role"></div><div class="hud" id="msg"></div><div class="hud" id="pr"></div><div class="hud" id="xh"></div><div class="hud" id="sb"><i></i></div><div class="hud" id="abs"></div>
 <div class="ov" id="menu"><div class="pn">
 <h1>BLACKWOOD</h1><p><b>LAST SHIFT</b> <small>— the asylum never sleeps</small></p>
@@ -34,6 +77,9 @@ select{font:inherit;color:var(--fg);background:#101a16;border:1px solid #3e5a4e;
 <div class="ov" id="end" style="display:none"><div class="pn"><h1 id="et"></h1><p id="es"></p><button onclick="location.reload()">MAIN MENU</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+if(typeof THREE==='undefined'){
+ document.body.innerHTML='<div style="font:16px monospace;color:#eee;background:#050505;min-height:100vh;padding:30px;box-sizing:border-box"><h1>BLACKWOOD COULD NOT LOAD</h1><p>The 3D engine could not download. Check your internet connection and reload this file.</p><p>Download the HTML and open it in Chrome or Opera, rather than a file preview window.</p></div>';
+}else{
 const $=i=>document.getElementById(i),rnd=Math.random;
 const AB=[['Dash',14],['Sense',24],['Seal Door',18],['Blackout',40],['Shriek',28]];
 const sc=new THREE.Scene();sc.background=new THREE.Color(0x030506);sc.fog=new THREE.FogExp2(0x040a0a,.08);
@@ -84,7 +130,7 @@ A(new THREE.TorusGeometry(.15,.04,8,16),0,1.35);A(new THREE.BoxGeometry(.06,.5,.
 const bm=new THREE.Mesh(new THREE.CylinderGeometry(.08,.35,3.2,10,1,true),new THREE.MeshBasicMaterial({color:0xffd24a,transparent:true,opacity:.16,blending:THREE.AdditiveBlending,depthWrite:false,side:2}));bm.position.y=1.6;g.add(bm);
 const pl=new THREE.PointLight(0xffc840,1.1,8);pl.position.y=1.2;g.add(pl);g.position.set(x,0,z);sc.add(g);return g}
 // state
-let S=null,R=null,myId='me',L=[],role='s',st='a',carry=0,keys={},yaw=0,pit=0,px=0,pz=0,stam=100,mode='menu',md=0,tmr=0,pt=0,toastT=0,endT=0,gens=[],keyM=null,bots=[],blk=0,slow=0,dash=0,sense=0,cds=[0,0,0,0,0],rpT=0,lastA=0,bob=0;
+let S=null,R=null,myId='me',L=[],role='s',st='a',carry=0,keys={},yaw=0,pit=0,px=0,pz=0,stam=100,mode='menu',md=0,tmr=0,pt=0,toastT=0,endT=0,gens=[],keyM=null,bots=[],blk=0,slow=0,dash=0,sense=0,cds=[0,0,0,0,0],rpT=0,lastA=0,bob=0,wardenLocked=false,releaseTimer=null;
 const PM={},toast=t=>{$('msg').textContent=t;toastT=3.2};
 let au;function beep(f,d,ty,v){try{au=au||new AudioContext();const o=au.createOscillator(),g=au.createGain();o.type=ty||'sawtooth';o.frequency.value=f;g.gain.value=v||.07;g.gain.exponentialRampToValueAtTime(.0001,au.currentTime+d);o.connect(g);g.connect(au.destination);o.start();o.stop(au.currentTime+d)}catch(e){}}
 function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -109,9 +155,11 @@ keyM=mkKey(sp[cfg.gens][0],sp[cfg.gens][1]);S.kx=sp[cfg.gens][0];S.kz=sp[cfg.gen
 const cs=[[-20,-20],[20,-20],[-20,20],[20,20]],c=cs[r()*4|0];role=myId==mon?'m':'s';st='a';blk=slow=dash=sense=0;cds=[3,3,3,3,3];
 if(role=='m'){px=c[0];pz=c[1]}else{px=(rnd()-.5)*6;pz=(rnd()-.5)*6}yaw=pit=0;
 bots=[];if(!R||isHost)Array.from({length:nb||0},(_,i)=>'b'+(i+1)).forEach(id=>{const w=id==mon;bots.push({id,x:w?c[0]:(rnd()-.5)*8,z:w?c[1]:(rnd()-.5)*8,yaw:0,r:w?'m':'s',s:'a',t:0})});
-mode='play';$('menu').style.display='none';$('end').style.display='none';$('role').textContent=role=='m'?'YOU ARE THE WARDEN':'SURVIVOR';$('role').style.color=role=='m'?'#f55':'#8cd';
-$('abs').innerHTML=role=='m'?AB.map((a,i)=>`<div class="ab" id="ab${i}">[${i+1}] ${a[0]}<br><small id="cd${i}"></small><i id="cb${i}"></i></div>`).join(''):'';
-$('sb').style.display=role=='m'?'none':'block';toast(role=='m'?'You are the Warden. Hunt them down.':'Repair the generators, find the key, escape.');beep(80,1.2)}
+mode='play';deathShown=false;spectating=false;spectateTarget=null;wardenLocked=role=='m';clearInterval(releaseTimer);$('wardenRelease').style.display='none';$('jumpOverlay').style.display='none';$('deathOverlay').style.display='none';$('mobileControls').style.display=(matchMedia('(pointer:coarse)').matches||innerWidth<=800)?'block':'none';$('menu').style.display='none';$('end').style.display='none';$('role').textContent=role=='m'?'YOU ARE THE WARDEN':'SURVIVOR';$('role').style.color=role=='m'?'#f55':'#8cd';
+$('touchJump').style.display=role=='m'?'block':'none';$('touchAct').textContent=role=='m'?'DASH / ACT':'INTERACT';$('abs').innerHTML=role=='m'?AB.map((a,i)=>`<div class="ab" id="ab${i}">[${i+1}] ${a[0]}<br><small id="cd${i}"></small><i id="cb${i}"></i></div>`).join(''):'';
+$('sb').style.display=role=='m'?'none':'block';if(role=='m'){startWardenRelease()}else{toast('Repair the generators, find the key, escape.')}beep(80,1.2)}
+function startWardenRelease(){const ov=$('wardenRelease'),num=$('releaseCount');ov.style.display='flex';let n=5;num.textContent=String(n);beep(55,0.8,'sawtooth',.12);releaseTimer=setInterval(()=>{n--;if(n>0){num.textContent=String(n);beep(n*75,.45,'sawtooth',.13);return}clearInterval(releaseTimer);releaseTimer=null;num.textContent='RELEASED';$('releaseWarning').textContent='IT IS LOOSE';$('releaseSub').textContent='RUN';beep(38,2,'sawtooth',.22);setTimeout(()=>{ov.style.display='none';wardenLocked=false;send({t:'wardenReleased'});toast('YOU HAVE BEEN RELEASED. HUNT THEM.');},650)} ,1000)}
+function playJumpScare(){if(deathShown)return;deathShown=true;const ov=$('jumpOverlay');ov.style.display='flex';ov.setAttribute('aria-hidden','false');beep(1800,.18,'square',.18);setTimeout(()=>beep(42,1.3,'sawtooth',.2),90);setTimeout(()=>beep(900,.35,'square',.15),250);setTimeout(()=>{ov.style.display='none';ov.setAttribute('aria-hidden','true');deathShown=false;showDeathScreen()},1750)}
 const done=()=>gens.filter(g=>g.p>=100).length;
 const pb=(p,c)=>`<div style="height:5px;background:#1c2420;margin:2px 0 6px"><i style="display:block;height:100%;width:${p}%;background:${c};box-shadow:0 0 6px ${c}"></i></div>`;
 function objHTML(){if(!S)return'';const d=done(),L=(ok,i,t)=>`<div style="color:${ok?'#6fd49a':'#d5ddd8'}">${i} ${t}${ok?' ✔':''}</div>`;
@@ -121,9 +169,13 @@ h+=L(S.gk,'🗝','GATE KEY '+(S.gk?'RECOVERED':'MISSING'))+L(S.gate,'⛩','UNLOC
 return h+(role=='m'?'<div style="color:#f77;margin-top:6px">Stop them.</div>':'')}
 // ---- net ----
 const send=d=>R?R.emit('g',d):handle(d,{isMe:true,peer:'me'});
-function kill(id){if(id==myId){if(role=='s'&&st=='a'){st='d';toast('The Warden caught you.');beep(55,1.2)}}else{const b=bots.find(x=>x.id==id);if(b)b.s='d'}}
+function kill(id){if(id==myId){if(role=='s'&&st=='a'){st='d';toast('THE WARDEN CAUGHT YOU');playJumpScare()}}else{const b=bots.find(x=>x.id==id);if(b)b.s='d'}}
+function showDeathScreen(){if(deathShown)return;deathShown=true;const humans=R?L.filter(p=>!p.isMe&&p.presence&&p.presence.r!='m'&&p.presence.s=='a'):[];const canSpectate=!!R&&humans.length>0;$('deathOverlay').style.display='flex';$('deathTitle').textContent='CAUGHT';$('deathText').textContent=canSpectate?'The Warden got you. Watch the survivors or return to the lobby.':'The Warden got you. This match has no living real players to spectate.';$('spectateChoices').style.display=canSpectate?'block':'none';$('soloDeathChoices').style.display=canSpectate?'none':'block';setTimeout(()=>{if(deathShown){$('deathTitle').style.transform='scale(1.04)';}},80)}
+function returnToLobby(){spectating=false;spectateTarget=null;deathShown=false;$('spectateReturn').style.display='none';$('deathOverlay').style.display='none';$('mobileControls').style.display='none';if(R){mode='lobby';$('menu').style.display='flex';$('end').style.display='none';show('s-lob');lobby();net0()}else{localLobby=true;pre=true;isHost=true;R=null;mode='lobby';$('menu').style.display='flex';$('end').style.display='none';$('lc').textContent='OFFLINE';$('bcr').style.display='block';$('bg').style.display='none';show('s-lob');lobby();$('lh').textContent='(offline lobby — online friends cannot join in this view)'}}
+$('spectateBtn').onclick=()=>{const humans=R?L.filter(p=>!p.isMe&&p.presence&&p.presence.r!='m'&&p.presence.s=='a'):[];if(!humans.length){$('deathText').textContent='No living real players to spectate.';return}$('deathOverlay').style.display='none';spectating=true;spectateTarget=humans[0].peer;$('spectateReturn').style.display='block';toast('SPECTATING '+((humans[0].presence&&humans[0].presence.u)||'survivor'));};
+$('deathLobbyBtn').onclick=returnToLobby;$('soloLobbyBtn').onclick=returnToLobby;$('spectateReturn').onclick=returnToLobby;
 function handle(d,m){if(d.t=='cfg'){if(R&&m.peer==hostId()&&!isHost){cfg=d.c;lobby()}return}if(d.t=='start'){if(R&&m.peer!=hostId())return;cfg=d.c;return begin(d.seed,d.mon,d.nb)}if(!S)return;switch(d.t){
-case'rp':{const g=gens[d.i];if(!g||g.p>=100)break;noise={x:g.x,z:g.z,t:tmr};g.p=Math.min(100,g.p+d.d);if(g.p>=100){g.l.material.emissive.setHex(0x22ff66);toast(`Generator repaired (${done()}/${gens.length})`+(done()>=gens.length?' — POWER ON. Find the key!':''));beep(440,.5,'sine')}
+case'wardenReleased':if(role=='s'){toast('⚠ THE WARDEN HAS BEEN RELEASED — HIDE!');beep(62,1.6,'sawtooth',.18);$('msg').style.color='#ff2929';setTimeout(()=>$('msg').style.color='#ffd27a',2400)}break;case'rp':{const g=gens[d.i];if(!g||g.p>=100)break;noise={x:g.x,z:g.z,t:tmr};g.p=Math.min(100,g.p+d.d);if(g.p>=100){g.l.material.emissive.setHex(0x22ff66);toast(`Generator repaired (${done()}/${gens.length})`+(done()>=gens.length?' — POWER ON. Find the key!':''));beep(440,.5,'sine')}
 else if(role=='m'&&tmr-lastA>6){lastA=tmr;toast('You hear a generator running…');beep(90,.5)}break}
 case'ky':if(!S.gk){S.gk=1;sc.remove(keyM);toast('The gate key was found!');beep(900,.3,'sine')}break;
 case'gt':S.gate=1;sign.material.map=sG;sign.material.needsUpdate=true;toast('THE EXIT GATE IS OPEN!');gl.material.emissive.setHex(0x22ff66);beep(70,1.6);break;
@@ -131,7 +183,7 @@ case'ab':fx(d);break;case'ct':kill(d.id);break}}
 function fx(d){if(d.n==3){const g=G[d.g];if(!g)return;const h=Math.abs(g.x)==10||Math.abs(g.x)==30?[.6,1.6]:[1.6,.6],b=[g.x-h[0],g.x+h[0],g.z-h[1],g.z+h[1]];W.push(b);const o=bx(g.x,g.z,h[0]*2,h[1]*2,3.4,mat(0x2a0606,0x550000));toast('A door was sealed!');setTimeout(()=>{sc.remove(o);W.splice(W.indexOf(b),1)},12000)}
 if(d.n==4&&role=='s'){blk=6;toast('LIGHTS OUT');beep(60,1.5)}
 if(d.n==5&&role=='s'&&Math.hypot(px-d.x,pz-d.z)<20){slow=3;toast('THE SHRIEK — you are slowed!');beep(1500,1.2,'square',.1)}}
-function useAb(n){if(role!='m'||cds[n]>0)return;cds[n]=AB[n][1];
+function useAb(n){if(wardenLocked||role!='m'||cds[n]>0)return;cds[n]=AB[n][1];
 if(n==0){dash=3;beep(200,.4)}if(n==1)sense=5;
 if(n==2){let b=-1,bd=14;G.forEach((g,i)=>{const d=Math.hypot(g.x-px,g.z-pz);if(d<bd){bd=d;b=i}});if(b<0){cds[n]=2;return toast('No door in reach')}send({t:'ab',n:3,g:b})}
 if(n==3)send({t:'ab',n:4});if(n==4)send({t:'ab',n:5,x:px,z:pz})}
@@ -145,14 +197,24 @@ if(n.k=='k')send({t:'ky'});else if(n.k=='e'){if(done()<gens.length)toast('The ga
 addEventListener('keydown',e=>{if(e.target.tagName=='INPUT')return;keys[e.code]=1;if(e.code=='KeyE'&&!e.repeat)act();if(e.code.startsWith('Digit')&&mode=='play'){const n=+e.code[5]-1;if(n>=0&&n<5)useAb(n)}});
 addEventListener('keyup',e=>keys[e.code]=0);
 addEventListener('mousedown',e=>{md=1;if(mode=='play'&&e.target.tagName=='CANVAS'&&rd.domElement.requestPointerLock)rd.domElement.requestPointerLock()});addEventListener('mouseup',()=>md=0);
+
 addEventListener('mousemove',e=>{if(mode!='play'||(!document.pointerLockElement&&!md))return;yaw-=e.movementX*.0024;pit=Math.max(-1.3,Math.min(1.3,pit-e.movementY*.0024))});
+// Touch joystick, drag-look and action buttons.
+(()=>{const base=$('stickBase'),knob=$('stickKnob'),pad=$('lookPad');let stickId=null,cx=0,cy=0;
+function stick(e){const r=base.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),max=43,d=Math.hypot(dx,dy)||1,k=Math.min(max,d);touchMoveX=dx/d*k/max;touchMoveY=dy/d*k/max;knob.style.transform=`translate(${touchMoveX*max}px,${touchMoveY*max}px)`;}
+base.addEventListener('pointerdown',e=>{if(mode!='play')return;stickId=e.pointerId;base.setPointerCapture(stickId);stick(e);e.preventDefault()});base.addEventListener('pointermove',e=>{if(e.pointerId===stickId)stick(e)});function endStick(e){if(e.pointerId!==stickId)return;stickId=null;touchMoveX=touchMoveY=0;knob.style.transform='translate(0,0)'}base.addEventListener('pointerup',endStick);base.addEventListener('pointercancel',endStick);
+pad.addEventListener('pointerdown',e=>{if(mode!='play'||e.clientX<innerWidth*.36)return;touchLookId=e.pointerId;lastLookX=e.clientX;lastLookY=e.clientY;pad.setPointerCapture(touchLookId);e.preventDefault()});pad.addEventListener('pointermove',e=>{if(e.pointerId!==touchLookId)return;const dx=e.clientX-lastLookX,dy=e.clientY-lastLookY;lastLookX=e.clientX;lastLookY=e.clientY;yaw-=dx*.006;pit=Math.max(-1.25,Math.min(1.25,pit-dy*.005));});
+function endLook(e){if(e.pointerId===touchLookId)touchLookId=null}pad.addEventListener('pointerup',endLook);pad.addEventListener('pointercancel',endLook);
+$('touchAct').addEventListener('pointerdown',e=>{e.preventDefault();if(role=='m'){useAb(0);return}keys.KeyE=true;act()});['pointerup','pointercancel','pointerleave'].forEach(ev=>$('touchAct').addEventListener(ev,()=>keys.KeyE=false));$('touchJump').addEventListener('pointerdown',e=>{e.preventDefault();if(role=='m')useAb((touchAbility++%5));else act()});$('touchRun').addEventListener('pointerdown',e=>{e.preventDefault();keys.ShiftLeft=true});['pointerup','pointercancel','pointerleave'].forEach(ev=>$('touchRun').addEventListener(ev,()=>keys.ShiftLeft=false));
+})();
+
 let pre=false,localLobby=false,cfg={max:4,rep:60,gens:3,diff:1,pub:1},isHost=false,lobCode='',ROOM=null,R0=null,L0=[];
 const ls={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}},esc=t=>String(t).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
-const show=id=>document.querySelectorAll('.scr').forEach(e=>e.style.display=e.id==id?'block':'none');
+const show=id=>{document.querySelectorAll('.scr').forEach(e=>e.style.display=e.id==id?'block':'none');if($('mobileControls'))$('mobileControls').style.display=mode=='play'&&(matchMedia('(pointer:coarse)').matches||innerWidth<=800)?'block':'none'};
 const ST=['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
 $('us').innerHTML=ST.map(x=>`<option>${x}</option>`).join('');$('c-max').innerHTML=[2,3,4,5,6,7,8].map(n=>`<option>${n}</option>`).join('');
 let me={u:'',s:'Texas'};const frs=()=>{try{return JSON.parse(ls.g('bw_f')||'[]')}catch(e){return[]}};
-let net=0,qmEnd=0;
+let net=0,qmEnd=0;let touchMoveX=0,touchMoveY=0,touchLookId=null,lastLookX=0,lastLookY=0,spectating=false,spectateTarget=null,deathShown=false,touchAbility=0;
 function olUp(){const e=$('ol');if(e)e.innerHTML=net?`<span style="color:#6fd49a">● ONLINE</span> <small>${L0.length} player${L0.length==1?'':'s'} connected</small>`:'<span style="color:#e66">○ OFFLINE</span> <small>online play needs the shared link while signed in</small>'}
 function home(){olUp();$('hi').innerHTML=`Signed in as <b style="color:#ffd27a">${esc(me.u)}</b> <small>· ${esc(me.s)}</small>`;show('s-main')}
 $('ub').onclick=()=>{const u=$('un').value.trim();if(!/^[A-Za-z0-9_ ]{2,14}$/.test(u)){$('ue').textContent='Use 2–14 letters, numbers, spaces or _.';return}me.u=u;me.s=$('us').value;ls.s('bw_u',u);ls.s('bw_s',me.s);home();connect()};
@@ -177,7 +239,7 @@ if(pk)return joinCode(pk.presence.l);cfg={max:5,rep:60,gens:3,diff:1,pub:1};qmEn
 setInterval(()=>{if(!qmEnd||mode=='play'||!isHost||!R)return;const t=Math.ceil((qmEnd-Date.now())/1000);if(t<=0){qmEnd=0;$('bg').onclick();return}$('lh').textContent=`(quick match starts in ${t}s — press START to go now)`},500);
 $('bc').onclick=()=>{pre=true;isHost=true;R=null;L=[];localLobby=!ROOM;lobCode='';$('lc').textContent=localLobby?'NOT CREATED':'— — — —';$('bcr').textContent='CREATE LOBBY';$('bg').textContent='START MATCH';show('s-lob');lobby();if(localLobby){$('lh').textContent='(create your lobby first; you choose when to start)';$('bg').style.display='none'}};
 $('bcr').onclick=()=>{if(!pre)return;if(localLobby){pre=false;lobCode=code4();$('lc').textContent=lobCode;$('bcr').style.display='none';$('bg').style.display='block';$('lh').textContent='(lobby created — invite options depend on online room support)';lobby();$('lp').innerHTML='<h2>YOUR LOBBY CODE: <span style="color:#ffd27a;letter-spacing:.25em">'+lobCode+'</span></h2><h2>PLAYERS IN LOBBY: 1/'+cfg.max+'</h2><div class="row"><span>👑 <b>'+esc(me.u||'You')+'</b> <small>(you · host)</small></span><small style="color:#6fd49a">JOINED</small></div>'+Array.from({length:Math.max(0,cfg.max-1)},(_,i)=>'<div class="row"><span style="opacity:.65">🧑 <b>Waiting for player '+(i+2)+'</b></span><small>EMPTY SLOT</small></div>').join('')+'<p><small>This view has no online room service, so friends on other devices cannot join this lobby yet. In a supported online view, this list will show each player who joins. The lobby stays open until you press START MATCH.</small></p><button class="big" id="copyLobbyCode">COPY LOBBY CODE</button><p><small>Share the code when using a supported online shared view.</small></p>';const cb=$('copyLobbyCode');if(cb)cb.onclick=()=>{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(lobCode).then(()=>toast('Lobby code copied.')).catch(()=>toast('Lobby code: '+lobCode));else toast('Lobby code: '+lobCode)};return}enter(code4(),true)};
-async function enter(code,host){pre=false;if(!ROOM){cfg={max:5,rep:60,gens:3,diff:1,pub:0};isHost=true;R=null;myId='me';const ids=['me','b1','b2','b3','b4'];begin((rnd()*1e9)|0,ids[rnd()*ids.length|0],4);toast('Online rooms are unavailable in this view — started an offline bot match instead.');return}try{R=await ROOM.join('bw'+code.toLowerCase());isHost=host;lobCode=code;myId='me2';
+async function enter(code,host){if(!ROOM){if(host){pre=true;isHost=true;localLobby=true;R=null;lobCode='';$('lc').textContent='NOT CONNECTED';$('lh').textContent='(online rooms are unavailable; lobby stays open)';$('bcr').style.display='block';$('bg').style.display='none';show('s-lob');lobby();$('lh').textContent='(online service unavailable — friends cannot join this local screen)';toast('Lobby screen opened; no online room service is connected.')}else{$('je').textContent='Cannot join the host lobby because online rooms are unavailable in this view. Open the shared game link while signed in.';show('s-join')}return}pre=false;try{R=await ROOM.join('bw'+code.toLowerCase());isHost=host;lobCode=code;myId='me2';
 R.on('g',m=>handle(m.data,m));R.onPeers(ch=>{L=ch.peers.slice();const m=L.find(p=>p.isMe);if(m)myId=m.peer;lobby();net0();if(isHost&&ch.joined.length)R.emit('g',{t:'cfg',c:cfg})});
 R.presence({u:me.u,h:host?1:0,x:0,z:0,y:0,r:'s',s:'a',v:1});L=R.peers().slice();$('lc').textContent=code;show('s-lob');lobby();net0()}catch(e){R=null;net=0;if(host){pre=true;isHost=true;localLobby=true;lobCode='';$('lc').textContent='NOT CREATED';$('lh').textContent='(could not connect online — lobby setup is still open; start offline only when ready)';$('bcr').style.display='block';$('bg').style.display='none';lobby();$('lh').textContent='(online lobby connection failed; this screen stays open)';toast('Could not create the online lobby. Your lobby screen is still open.')}else{$('je').textContent='Could not join that online lobby. Try again or go back.';show('s-join')}}}
 const hostId=()=>{const h=L.find(p=>p.presence&&p.presence.h==1);return h&&h.peer};
@@ -226,18 +288,19 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last
 const others=()=>{if(!R)return bots.map(b=>({peer:b.id,pr:{x:b.x,z:b.z,y:b.yaw,r:b.r,s:b.s}}));
 const o=L.filter(p=>!p.isMe).map(p=>({peer:p.peer,pr:p.presence||{}}));const hp=L.find(p=>p.presence&&p.presence.h==1),bl=isHost?bots.map(b=>[b.id,b.x,b.z,b.yaw,b.r,b.s]):(hp&&hp.presence.b)||[];
 bl.forEach(a=>o.push({peer:a[0],pr:{x:a[1],z:a[2],y:a[3],r:a[4],s:a[5]}}));return o};
-function tick(dt){tmr+=dt;if(toastT>0){toastT-=dt;if(toastT<=0)$('msg').textContent=''}
+function tick(dt){tmr+=dt;if(wardenLocked){cam.position.set(px,1.65,pz);cam.rotation.set(pit,yaw,0,'YXZ');return}if(toastT>0){toastT-=dt;if(toastT<=0)$('msg').textContent=''}
 lights.forEach((l,i)=>{l.intensity=blk>0?.05:(.9+(i%4==0?Math.sin(tmr*31+i)*Math.sin(tmr*7)*.5:0))});
 cds=cds.map(c=>Math.max(0,c-dt));if(role=='m')AB.forEach((a,i)=>{const e=$('ab'+i);if(e){e.classList.toggle('cd',cds[i]>0);$('cd'+i).textContent=cds[i]>0?Math.ceil(cds[i])+'s':'ready';$('cb'+i).style.width=(cds[i]>0?100*cds[i]/a[1]:0)+'%'}});
 dash=Math.max(0,dash-dt);sense=Math.max(0,sense-dt);blk=Math.max(0,blk-dt);slow=Math.max(0,slow-dt);
-const mon=role=='m',alive=st=='a';let moving=0;
-if(alive){const f=(keys.KeyW?1:0)-(keys.KeyS?1:0),s=(keys.KeyD?1:0)-(keys.KeyA?1:0),l=Math.hypot(f,s)||1;let sp=mon?3.5:3.7;moving=f||s;
+const mon=role=='m',alive=st=='a'&&!spectating;let moving=0;if(st=='d'&&!deathShown)showDeathScreen();
+if(alive){const f=Math.max(-1,Math.min(1,(keys.KeyW?1:0)-(keys.KeyS?1:0)-touchMoveY)),s=Math.max(-1,Math.min(1,(keys.KeyD?1:0)-(keys.KeyA?1:0)+touchMoveX)),l=Math.hypot(f,s)||1;let sp=mon?3.5:3.7;moving=f||s;
 if(mon&&dash>0)sp=7;if(!mon){if(keys.ShiftLeft&&stam>0&&moving){sp=5.8;stam=Math.max(0,stam-22*dt)}else stam=Math.min(100,stam+14*dt)}if(slow>0)sp*=.5;
 const q={x:px+(-Math.sin(yaw)*f+Math.cos(yaw)*s)/l*sp*dt*(moving?1:0),z:pz+(-Math.cos(yaw)*f-Math.sin(yaw)*s)/l*sp*dt*(moving?1:0)};col(q,.4);px=q.x;pz=q.z;bob+=moving?dt*8:0;
 if(!mon&&keys.KeyE){const n=near();if(n&&n.k=='g'){rpT+=dt;if(rpT>.25){send({t:'rp',i:n.i,d:100/cfg.rep*rpT});rpT=0;beep(120+rnd()*60,.1,'square',.03)}}else rpT=0}else rpT=0;
 if(!mon&&S.gate&&Math.hypot(px-GATE.x,pz-GATE.z)<2.2){st='e';toast('YOU ESCAPED!');beep(660,.8,'sine')}
 if(mon)for(const o of others())if(o.pr.r!='m'&&o.pr.s=='a'&&Math.hypot(o.pr.x-px,o.pr.z-pz)<1.5)send({t:'ct',id:o.peer})}
 $('sb').firstChild.style.width=stam+'%';
+if(spectating&&R){const target=L.find(p=>p.peer==spectateTarget);if(target&&target.presence){px=+(target.presence.x||0);pz=+(target.presence.z||0);yaw=+(target.presence.y||0);pit=0}else{const al=L.filter(p=>!p.isMe&&p.presence&&p.presence.r!='m'&&p.presence.s=='a');if(al.length)spectateTarget=al[0].peer;else{returnToLobby()}}}
 cam.position.set(px,(mon?1.9:1.6)+Math.sin(bob)*.04+(slow>0?Math.sin(tmr*40)*.04:0),pz);cam.rotation.set(pit,yaw,Math.sin(bob*.5)*.008);
 const dark=blk>0&&!mon;fl.intensity=mon?0:dark?0:2.4;amb.intensity=mon?1.1:dark?.04:.55;sc.fog.density=dark?.22:mon?.05:.08;
 bots.forEach(b=>botTick(b,dt));
@@ -257,7 +320,6 @@ if(!sv.length||sv.includes('a'))return;S.end=1;mode='end';document.exitPointerLo
 $('end').style.display='flex';$('et').textContent=esc?'SURVIVORS ESCAPED':'THE WARDEN WINS';$('et').style.color=esc?'#6fd49a':'#e23b3b';
 $('es').textContent=role=='m'?(esc?'Some of them slipped through the gate.':'No one left alive.'):(st=='e'?'You made it out of Blackwood.':'You did not make it out.')}
 requestAnimationFrame(frame);
+}
 </script></body></html>
-
-
 
