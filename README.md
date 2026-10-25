@@ -158,7 +158,7 @@ function home(){olUp();$('hi').innerHTML=`Signed in as <b style="color:#ffd27a">
 $('ub').onclick=()=>{const u=$('un').value.trim();if(!/^[A-Za-z0-9_ ]{2,14}$/.test(u)){$('ue').textContent='Use 2–14 letters, numbers, spaces or _.';return}me.u=u;me.s=$('us').value;ls.s('bw_u',u);ls.s('bw_s',me.s);home();connect()};
 $('bn').onclick=()=>{$('un').value=me.u;$('us').value=me.s;show('s-user')};
 document.querySelectorAll('.back').forEach(b=>b.onclick=home);
-$('bf').onclick=()=>{renderFr();show('s-fr')};$('bj0').onclick=()=>{$('je').textContent=ROOM?'':'Online play isn’t available in this view. Open the shared link while signed in.';renderJoin();show('s-join')};
+$('bf').onclick=()=>{renderFr();show('s-fr')};$('bj0').onclick=()=>{$('je').textContent=ROOM?'':'Online rooms are unavailable here. You can still play a bot match using ONLINE PLAY or CREATE LOBBY.';renderJoin();show('s-join')};
 {const u=ls.g('bw_u');if(u){me.u=u;me.s=ls.g('bw_s')||'Texas';home();connect()}else show('s-user')}
 async function connect(){try{ROOM=window.claude&&await claude.use('room');if(!ROOM)return olUp();R0=await ROOM.join('bw-net');R0.onPeers(c=>{L0=c.peers.slice();renderJoin();renderFr();olUp()});net=1;net0();olUp()}catch(e){ROOM=null;net=0;olUp()}}
 function net0(){R0&&R0.presence({u:me.u,s:me.s,l:R?lobCode:'',pub:R&&isHost&&cfg.pub?1:0,n:L.length,m:cfg.max})}
@@ -177,9 +177,9 @@ if(pk)return joinCode(pk.presence.l);cfg={max:5,rep:60,gens:3,diff:1,pub:1};qmEn
 setInterval(()=>{if(!qmEnd||mode=='play'||!isHost||!R)return;const t=Math.ceil((qmEnd-Date.now())/1000);if(t<=0){qmEnd=0;$('bg').onclick();return}$('lh').textContent=`(quick match starts in ${t}s — press START to go now)`},500);
 $('bc').onclick=()=>{pre=true;isHost=true;R=null;L=[];localLobby=!ROOM;$('lc').textContent=localLobby?'OFFLINE':'— — — —';show('s-lob');lobby();if(localLobby){$('lh').textContent='(offline bot lobby — online rooms require the shared signed-in game view)';$('bcr').textContent='START OFFLINE MATCH';$('bg').style.display='none'}};
 $('bcr').onclick=()=>{if(!pre)return;if(localLobby){pre=false;myId='me';const ids=['me',...Array.from({length:Math.max(1,cfg.max-1)},(_,i)=>'b'+(i+1))];begin((rnd()*1e9)|0,ids[rnd()*ids.length|0],Math.max(1,cfg.max-1));toast('Offline lobby started with bots.');return}enter(Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd()*24|0]).join(''),true)};
-async function enter(code,host){pre=false;if(!ROOM){$('je').textContent='Online play isn’t available in this view.';return}try{R=await ROOM.join('bw'+code.toLowerCase());isHost=host;lobCode=code;myId='me2';
+async function enter(code,host){pre=false;if(!ROOM){cfg={max:5,rep:60,gens:3,diff:1,pub:0};isHost=true;R=null;myId='me';const ids=['me','b1','b2','b3','b4'];begin((rnd()*1e9)|0,ids[rnd()*ids.length|0],4);toast('Online rooms are unavailable in this view — started an offline bot match instead.');return}try{R=await ROOM.join('bw'+code.toLowerCase());isHost=host;lobCode=code;myId='me2';
 R.on('g',m=>handle(m.data,m));R.onPeers(ch=>{L=ch.peers.slice();const m=L.find(p=>p.isMe);if(m)myId=m.peer;lobby();net0();if(isHost&&ch.joined.length)R.emit('g',{t:'cfg',c:cfg})});
-R.presence({u:me.u,h:host?1:0,x:0,z:0,y:0,r:'s',s:'a',v:1});L=R.peers().slice();$('lc').textContent=code;show('s-lob');lobby();net0()}catch(e){R=null;$('je').textContent='Could not join: '+(e.message||e.code||'error')}}
+R.presence({u:me.u,h:host?1:0,x:0,z:0,y:0,r:'s',s:'a',v:1});L=R.peers().slice();$('lc').textContent=code;show('s-lob');lobby();net0()}catch(e){R=null;net=0;cfg={max:5,rep:60,gens:3,diff:1,pub:0};isHost=true;myId='me';const ids=['me','b1','b2','b3','b4'];begin((rnd()*1e9)|0,ids[rnd()*ids.length|0],4);toast('Could not connect to an online lobby — started an offline bot match instead.')}}
 const hostId=()=>{const h=L.find(p=>p.presence&&p.presence.h==1);return h&&h.peer};
 function lobby(){if(mode=='play')return;
 const hum=pre?[{peer:'me',isMe:true,presence:{u:me.u,h:1}}]:L,hid=pre?'me':hostId();
@@ -258,5 +258,6 @@ $('end').style.display='flex';$('et').textContent=esc?'SURVIVORS ESCAPED':'THE W
 $('es').textContent=role=='m'?(esc?'Some of them slipped through the gate.':'No one left alive.'):(st=='e'?'You made it out of Blackwood.':'You did not make it out.')}
 requestAnimationFrame(frame);
 </script></body></html>
+
 
 
