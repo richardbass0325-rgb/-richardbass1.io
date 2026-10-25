@@ -1,6 +1,3 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Blackwood: Last Shift</title><meta name="color-scheme" content="dark">
-<style>
-:root{--bg:#040506;--fg:#d5ddd8;--ac:#e23b3b;--ok:#6fd49a;--pn:#0b100fe8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#040506}}:root[data-theme="dark"]{--bg:#040506}
 html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
 canvas{position:fixed;inset:0;width:100%;height:100%}
@@ -258,5 +255,6 @@ $('end').style.display='flex';$('et').textContent=esc?'SURVIVORS ESCAPED':'THE W
 $('es').textContent=role=='m'?(esc?'Some of them slipped through the gate.':'No one left alive.'):(st=='e'?'You made it out of Blackwood.':'You did not make it out.')}
 requestAnimationFrame(frame);
 </script></body></html>
+
 
 
